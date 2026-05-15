@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">OpenCode memory vault layout</title>
+  <desc id="desc">Diagram showing the memory vault folders created by the installer.</desc>
+  <rect width="960" height="560" fill="#f6f8fa"/>
+  <rect x="40" y="36" width="880" height="488" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="72" y="86" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#24292f">Persistent Memory Vault</text>
+  <text x="72" y="124" font-family="Arial, sans-serif" font-size="17" fill="#57606a">OpenCode loads these files at every session start.</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18">
+    <text x="92" y="182" fill="#24292f">jarvis-vault/</text>
+    <text x="128" y="222" fill="#0969da">OpenCode Memory.md</text>
+    <text x="128" y="262" fill="#24292f">_sessions/</text>
+    <text x="166" y="302" fill="#0969da">CURRENT.md</text>
+    <text x="128" y="342" fill="#24292f">_code_memory/</text>
+    <text x="166" y="382" fill="#8250df">README.md</text>
+    <text x="166" y="422" fill="#1a7f37">fixes/</text>
+    <text x="166" y="462" fill="#1a7f37">patterns/</text>
+    <text x="166" y="502" fill="#cf222e">failures/</text>
+    <text x="386" y="422" fill="#bf8700">projects/</text>
+    <text x="386" y="462" fill="#bf8700">pending/</text>
+  </g>
+  <rect x="570" y="178" width="286" height="248" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="600" y="224" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#24292f">What gets remembered</text>
+  <text x="600" y="268" font-family="Arial, sans-serif" font-size="16" fill="#57606a">Problem and root cause</text>
+  <text x="600" y="308" font-family="Arial, sans-serif" font-size="16" fill="#57606a">Changed files and commands</text>
+  <text x="600" y="348" font-family="Arial, sans-serif" font-size="16" fill="#57606a">What worked or failed</text>
+  <text x="600" y="388" font-family="Arial, sans-serif" font-size="16" fill="#57606a">Verification notes</text>
+</svg>

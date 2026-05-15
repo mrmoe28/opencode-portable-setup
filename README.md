@@ -2,6 +2,20 @@
 
 Recreate the OpenCode setup used on this machine: global memory, code-memory notes, LSP, automatic pending memory capture, and shell helpers.
 
+## Screenshots
+
+### Install Flow
+
+![Install flow](docs/screenshots/install-flow.svg)
+
+### Memory Layout
+
+![Memory layout](docs/screenshots/memory-layout.svg)
+
+### Resume Commands
+
+![Resume commands](docs/screenshots/resume-commands.svg)
+
 ## What This Sets Up
 
 - OpenCode global config with:
