@@ -62,12 +62,38 @@ Custom Ollama endpoint:
 OLLAMA_BASE_URL="http://ollama.lan:11434/v1" ./scripts/install.sh
 ```
 
+You can also pass it as an installer option:
+
+```bash
+./scripts/install.sh --ollama-host http://ollama.lan:11434
+```
+
+For an IP address:
+
+```bash
+./scripts/install.sh --ollama-host http://192.168.1.25:11434
+```
+
+If you already know the OpenAI-compatible API URL, use:
+
+```bash
+./scripts/install.sh --ollama-url http://192.168.1.25:11434/v1
+```
+
 Use both if your laptop should match this machine exactly:
 
 ```bash
 VAULT_DIR="$HOME/Project X/jarvis-vault" \
 OLLAMA_BASE_URL="http://ollama.lan:11434/v1" \
 ./scripts/install.sh
+```
+
+Equivalent option-based command:
+
+```bash
+./scripts/install.sh \
+  --vault-dir "$HOME/Project X/jarvis-vault" \
+  --ollama-host http://ollama.lan:11434
 ```
 
 ## After Install

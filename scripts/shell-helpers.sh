@@ -1,8 +1,8 @@
 
 # opencode-portable-setup helpers
 export PATH="$HOME/.opencode/bin:$HOME/.npm-packages/bin:$HOME/go/bin:$PATH"
-export OLLAMA_HOST="${OLLAMA_HOST:-http://ollama.lan:11434}"
-export OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-http://ollama.lan:11434}"
+export OLLAMA_HOST="${OLLAMA_HOST:-{{OLLAMA_HOST}}}"
+export OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-{{OLLAMA_HOST}}}"
 
 oc() {
   OLLAMA_HOST="$OLLAMA_HOST" OLLAMA_BASE_URL="$OLLAMA_BASE_URL" opencode "$@"
@@ -62,4 +62,3 @@ agent-auto() {
 User task:
 $prompt"
 }
-
