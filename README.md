@@ -23,7 +23,7 @@ Recreate the OpenCode setup used on this machine: global memory, code-memory not
 ## Quick Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/opencode-portable-setup.git
+git clone https://github.com/mrmoe28/opencode-portable-setup.git
 cd opencode-portable-setup
 ./scripts/install.sh
 ```
@@ -40,10 +40,20 @@ Custom vault location:
 VAULT_DIR="$HOME/Project X/jarvis-vault" ./scripts/install.sh
 ```
 
+That custom command is the closest match to this desktop setup.
+
 Custom Ollama endpoint:
 
 ```bash
 OLLAMA_BASE_URL="http://ollama.lan:11434/v1" ./scripts/install.sh
+```
+
+Use both if your laptop should match this machine exactly:
+
+```bash
+VAULT_DIR="$HOME/Project X/jarvis-vault" \
+OLLAMA_BASE_URL="http://ollama.lan:11434/v1" \
+./scripts/install.sh
 ```
 
 ## After Install
@@ -110,4 +120,3 @@ OpenCode loads the vault every session. It should:
   - `_code_memory/failures`
 
 This is retrieval memory, not model training. It makes future sessions smarter by giving OpenCode a searchable record of what worked and what failed.
-
