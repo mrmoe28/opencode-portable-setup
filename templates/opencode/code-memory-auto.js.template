@@ -1,0 +1,110 @@
+import fs from "fs"
+import path from "path"
+
+const MEMORY_ROOT = "{{VAULT_DIR}}/_code_memory"
+const PENDING_DIR = path.join(MEMORY_ROOT, "pending")
+const CURRENT_FILE = "{{VAULT_DIR}}/_sessions/CURRENT.md"
+
+function safeText(value) {
+  if (value === undefined || value === null) return ""
+  if (typeof value === "string") return value
+  try {
+    return JSON.stringify(value)
+  } catch {
+    return String(value)
+  }
+}
+
+function write(file, text) {
+  fs.mkdirSync(path.dirname(file), { recursive: true })
+  fs.writeFileSync(file, text)
+}
+
+function append(file, text) {
+  fs.mkdirSync(path.dirname(file), { recursive: true })
+  fs.appendFileSync(file, text)
+}
+
+function basenameSlug(value) {
+  return safeText(value)
+    .replace(/[^a-zA-Z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80) || "session"
+}
+
+export const CodeMemoryAuto = async ({ directory, worktree, client }) => {
+  const sessionState = new Map()
+
+  function stateFor(sessionID) {
+    const key = sessionID || "unknown-session"
+    if (!sessionState.has(key)) {
+      sessionState.set(key, {
+        sessionID: key,
+        editedFiles: new Set(),
+        commands: [],
+        lastWrite: 0,
+      })
+    }
+    return sessionState.get(key)
+  }
+
+  function writePending(state) {
+    const now = new Date()
+    const nowMs = now.getTime()
+    if (nowMs - state.lastWrite < 30000) return
+    state.lastWrite = nowMs
+
+    const projectPath = worktree || directory || "unknown"
+    const pendingFile = path.join(PENDING_DIR, `${basenameSlug(state.sessionID)}.md`)
+    const editedFiles = Array.from(state.editedFiles).sort()
+    const commands = state.commands.slice(-30)
+
+    write(pendingFile, `# Pending Code Memory Review
+
+Updated: ${now.toISOString()}
+Session: ${state.sessionID}
+Project: ${projectPath}
+
+## Automatically Observed
+
+Edited files:
+${editedFiles.length ? editedFiles.map((file) => `- ${file}`).join("\n") : "- None recorded"}
+
+Recent shell commands:
+${commands.length ? commands.map((command) => `- \`${command.replaceAll("`", "\\`")}\``).join("\n") : "- None recorded"}
+
+## Required Human/Agent Follow-Up
+
+Before closing or at the next session start, convert this pending note into one of:
+
+- \`_code_memory/fixes/\` if a bug was fixed.
+- \`_code_memory/patterns/\` if a reusable approach was discovered.
+- \`_code_memory/failures/\` if an approach failed and should not be repeated.
+
+Include problem, cause, action, verification, and reuse notes. Delete this pending note after converting it.
+`)
+
+    append(CURRENT_FILE, `\n\n## Automatic Code Memory Pending\n\nUpdated: ${now.toISOString()}\n\n- Review pending code memory note: \`${pendingFile}\`\n`)
+  }
+
+  return {
+    event: async ({ event }) => {
+      const sessionID = event?.properties?.sessionID || event?.sessionID || event?.id
+      const state = stateFor(sessionID)
+
+      if (event?.type === "file.edited") {
+        const file = event?.properties?.file || event?.properties?.path || event?.properties?.filePath || event?.file || event?.path
+        if (file) state.editedFiles.add(safeText(file))
+      }
+
+      if (event?.type === "command.executed") {
+        const command = event?.properties?.command || event?.properties?.cmd || event?.command
+        if (command) state.commands.push(safeText(command))
+      }
+
+      if (event?.type === "session.idle" && (state.editedFiles.size || state.commands.length)) {
+        writePending(state)
+      }
+    },
+  }
+}
